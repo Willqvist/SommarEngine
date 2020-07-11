@@ -1,0 +1,15 @@
+{
+  "name": "NameOfPrefab",
+  "active": "true",
+  "components": [
+    {
+      "name": "Sprite",
+      "texture": "doge.png"
+    },
+    {
+      "name": "Transform",
+      "position": "(10,0,0)"
+    }
+  ],
+  "children": []
+}

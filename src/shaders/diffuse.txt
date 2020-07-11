@@ -1,0 +1,21 @@
+vertex:
+#version 330 core
+in vec2 position;
+in vec2 uv;
+out vec2 t_uv;
+uniform mat4 transform;
+uniform mat4 mvp;
+void main(){
+    gl_Position = mvp*transform*vec4(position,0.0,1.0);
+    t_uv = uv;
+}
+
+fragment:
+#version 150 core
+out vec4 fragPosition;
+in vec2 t_uv;
+uniform sampler2D tex;
+uniform vec4 _color = vec4(1);
+void main(){
+    fragPosition = texture(tex,t_uv)*_color;
+}
