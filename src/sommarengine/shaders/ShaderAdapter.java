@@ -10,7 +10,9 @@ public abstract class ShaderAdapter implements Shader {
     @Override
     public void useProgram(ShaderProgram program) {
         this.program = program;
+        program.bind();
         bindAttributes(program);
+        program.unbind();
     }
 
     protected abstract void bindAttributes(ShaderProgram program);

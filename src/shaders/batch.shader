@@ -21,6 +21,6 @@ in float v_textureIndex;
 uniform vec4 _color = vec4(1);
 uniform sampler2D textures[32];
 void main(){
-    int tex = int(v_textureIndex);
-    fragPosition = texture(textures[0],t_uv);
+    int texIndex = int(v_textureIndex);
+    fragPosition = texture(textures[texIndex],t_uv);
 }

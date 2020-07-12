@@ -15,6 +15,8 @@ import sommarengine.tool.FileTools;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
+import static org.lwjgl.opengl.GL11.glGetError;
+
 public class OpenGLShaderProgram implements ShaderProgram {
 
     private int program, vertexShader, fragmentShader;
@@ -24,7 +26,6 @@ public class OpenGLShaderProgram implements ShaderProgram {
     public OpenGLShaderProgram(String shaderFile) {
         ShaderFiles shaderFiles = FileTools.parseShaderFile(shaderFile);
         createProgram();
-
         vertexShader = createShader(GL30.GL_VERTEX_SHADER, shaderFiles.vertexShader);
         fragmentShader = createShader(GL30.GL_FRAGMENT_SHADER, shaderFiles.fragmentShader);
         linkProgram();
@@ -32,7 +33,7 @@ public class OpenGLShaderProgram implements ShaderProgram {
 
     private void createProgram() {
         program = GL30.glCreateProgram();
-        bind();
+        //bind();
     }
 
     private int createShader(int shader, String src) {
@@ -81,7 +82,7 @@ public class OpenGLShaderProgram implements ShaderProgram {
 
     @Override
     public void bind() {
-        GL20.glUseProgram(program);
+        GL30.glUseProgram(program);
     }
 
     @Override

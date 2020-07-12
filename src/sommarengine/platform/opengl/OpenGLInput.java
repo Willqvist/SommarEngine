@@ -1,18 +1,25 @@
 package sommarengine.platform.opengl;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWKeyCallbackI;
-import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import sommarengine.core.Window;
 import sommarengine.input.Input;
 
-public class OpenGLInput extends Input implements GLFWKeyCallbackI {
+public class OpenGLInput extends Input {
+
     @Override
-    public void invoke(long window, int key, int scancode, int action, int mods) {
+    public void onKeyEvent(Window window, int key, int scancode, int action, int mods) {
         int mode = keys[key];
         if(mode == GLFW.GLFW_RELEASE && action == GLFW.GLFW_PRESS)
             action = PRESSED;
         keys[key] = action;
+    }
+
+    @Override
+    public void onMouseEvent(Window window, int button, int action, int mods) {
+        int mode = mouseButton[button];
+        if(mode == GLFW.GLFW_RELEASE && action == GLFW.GLFW_PRESS)
+            action = PRESSED;
+        mouseButton[button] = action;
     }
 
     @Override
@@ -26,12 +33,5 @@ public class OpenGLInput extends Input implements GLFWKeyCallbackI {
         }
 
 
-    }
-
-    public void invoke(long window, int button, int action, int mods) {
-        int mode = mouseButton[button];
-        if(mode == GLFW.GLFW_RELEASE && action == GLFW.GLFW_PRESS)
-            action = PRESSED;
-        mouseButton[button] = action;
     }
 }

@@ -2,10 +2,21 @@ package sommarengine.model;
 
 public class TransferAttributes {
     public int size;
-    public Type type;
+    private Type type;
+    private int index = -1;
     public TransferAttributes(Type type,int size){
         this.size = size;
         this.type = type;
+    }
+
+    public TransferAttributes(int index,int size){
+        this.size = size;
+        this.index = index;
+    }
+
+    public int getIndex() {
+        if(index >= 0) return index;
+        return type.getIndex();
     }
 
     public interface Type {
@@ -32,10 +43,10 @@ public class TransferAttributes {
 
     public enum TypeEnum implements Type{
         POSITION(0),
-        COLOR(3),
-        UV(1),
-        NORMALS(2),
-        TEXTURE_ID(4),
+        COLOR(4),
+        UV(3),
+        NORMALS(3),
+        TEXTURE_ID(2),
         CUSTOM(-1);
 
         private int index = 0;

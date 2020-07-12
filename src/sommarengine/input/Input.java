@@ -1,6 +1,7 @@
 package sommarengine.input;
 
 import org.lwjgl.glfw.GLFW;
+import sommarengine.core.Window;
 
 public abstract class Input {
     protected static final int PRESSED = 5;
@@ -24,5 +25,7 @@ public abstract class Input {
         return mouseButton[button] == GLFW.GLFW_PRESS || mouseButton[button] == GLFW.GLFW_REPEAT;
     }
 
+    public abstract void onKeyEvent(Window window,int key, int scancode, int action, int mods);
+    public abstract void onMouseEvent(Window window,int button, int action, int mods);
     public abstract void pollEvents();
 }

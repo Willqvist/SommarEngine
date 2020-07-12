@@ -1,5 +1,7 @@
 package sommarengine.batching;
 
+import sommarengine.graphics.Buffer;
+import sommarengine.platform.GraphicsAPI;
 import sommarengine.texture.Texture;
 import sommarengine.texture.TextureLoader;
 
@@ -9,17 +11,39 @@ import java.util.List;
 
 public class Batch2D implements Batch {
 
-    private int maxVerts = 0;
+    private int maxVerts = 0, maxIndicies = 0;
     private BatchSource source;
     private float[] vertices;
     private int currentIndex = 0;
     private int textureIndex = 1;
     private Texture[] boundTextures = new Texture[32];
+
+    private Buffer indiciesBuffer;
+
     public Batch2D(BatchSource source, int maxVerts) {
         this.maxVerts = maxVerts*4;
         this.source = source;
         vertices = new float[this.maxVerts];
         boundTextures[0] = TextureLoader.WHITE;
+        /*
+        float indicies[] = new float[this.maxIndicies];
+        int offset = 0;
+        for(int i = 0; i < indicies.length; i+= 6) {
+            indicies[i + 0] = 0 + offset;
+            indicies[i + 1] = 1 + offset;
+            indicies[i + 2] = 2 + offset;
+
+            indicies[i + 3] = 2 + offset;
+            indicies[i + 4] = 3 + offset;
+            indicies[i + 5] = 0 + offset;
+
+            offset += 4;
+        }
+
+        indiciesBuffer = GraphicsAPI.createBuffer(indicies,indicies.length, Buffer.Type.ELEMENT,Buffer.Store.STATIC);
+
+         */
+
     }
 
     private void appendData(float ...data) {
@@ -53,9 +77,9 @@ public class Batch2D implements Batch {
             this.textureIndex++;
         }
 
-        if(isOutsideRange() || textureIndex >= 31) {
+        if(isOutsideRange() || textureIndex > 31) {
             flush();
-            if(textureIndex >= 31) {
+            if(textureIndex > 31) {
                 this.textureIndex = 1;
                 textureIndex = 1;
             }
@@ -101,10 +125,14 @@ public class Batch2D implements Batch {
         float uvHeight = texture.getHeight()/(texture.getOriginal().getHeight()*1f);
         float uvOffsetX = texture.getOffsetX()/(texture.getOriginal().getWidth()*1f);
         float uvOffsetY = texture.getOffsetY()/(texture.getOriginal().getHeight()*1f);
-        appendData(x1,y1,uvOffsetX,uvOffsetY+uvHeight,textureIndex);
-        appendData(x2,y2,uvOffsetX+uvWidth,uvOffsetY+uvHeight,textureIndex);
-        appendData(x3,y3,uvOffsetX+uvWidth,uvOffsetY,textureIndex);
-        appendData(x4,y4,uvOffsetX,uvOffsetY,textureIndex);
+        appendData(x1,y1,uvOffsetX,uvOffsetY+uvHeight,textureIndex+0.1f);
+        appendData(x2,y2,uvOffsetX+uvWidth,uvOffsetY+uvHeight,textureIndex+0.1f);
+        appendData(x3,y3,uvOffsetX+uvWidth,uvOffsetY,textureIndex+0.1f);
+        appendData(x4,y4,uvOffsetX,uvOffsetY,textureIndex+0.1f);
+    }
+
+    public void end() {
+
     }
 
     public void flush() {

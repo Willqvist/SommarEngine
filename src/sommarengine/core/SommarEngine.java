@@ -4,17 +4,20 @@ import sommarengine.Time;
 import sommarengine.events.Event;
 import sommarengine.events.EventListener;
 import sommarengine.events.event_types.WindowCloseEvent;
+import sommarengine.platform.SystemAPI;
 
 public class SommarEngine implements EventListener {
 
     private boolean isRunning = true;
     private Application application;
-
-    public SommarEngine(Application application) {
+        //TODO: pass in if debug should be enabled!
+    public SommarEngine(Application application, EngineAttributes attributes) {
         this.application = application;
-        application.init(1080,720, "Title of window");
+        application.init(attributes.getWidth(),attributes.getHeight(), attributes.getTitle());
         application.getWindow().addEventListener(this);
         application.getWindow().addEventListener(Screen.viewport);
+        if(attributes.isDebug())
+            SystemAPI.enableDebug();
         loop();
     }
 
@@ -51,6 +54,7 @@ public class SommarEngine implements EventListener {
                 fps = 0;
                 udp = 0;
             }
+
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
@@ -58,6 +62,7 @@ public class SommarEngine implements EventListener {
             }
         }
         application.destroy();
+        SystemAPI.destroy();
     }
 
     private boolean onWindowClose(WindowCloseEvent event) {

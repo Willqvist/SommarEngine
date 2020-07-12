@@ -3,11 +3,14 @@ package sommarengine.platform.opengl;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.Callback;
 import sommarengine.graphics.RenderingCommand;
 
 import java.awt.*;
 
 public class OpenGLRenderingCommand implements RenderingCommand {
+
+    private static Callback debug;
 
     public void clearScreen() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -19,5 +22,8 @@ public class OpenGLRenderingCommand implements RenderingCommand {
 
     public void createContext() {
         GL.createCapabilities();
+    }
+
+    public void destroy() {
     }
 }

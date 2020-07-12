@@ -28,11 +28,11 @@ public class OpenGLGpuDataTransfer implements GpuDataTransfer {
         return id;
     }
 
-    private int createVBO(float[] meshData,int size, boolean dyanmic){
+    private int createVBO(float[] meshData,int size, boolean dynamic){
         int ID = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, ID);
         FloatBuffer data = ToBuffer(meshData, size);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, dyanmic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
         memFree(data);
 
         return ID;
@@ -57,7 +57,7 @@ public class OpenGLGpuDataTransfer implements GpuDataTransfer {
 
     @Override
     public void rebuild(float[] data, int size, boolean dynamic, TransferAttributes[] attributes) {
-        if(vao != -1)
+        if(vao != -1 && !dynamic)
             destroy();
 
         int pointer = 0;
@@ -66,13 +66,26 @@ public class OpenGLGpuDataTransfer implements GpuDataTransfer {
             stride += attributes[i].size;
         }
         stride *= 4;
-        vao = createVAO();
-        vbo = createVBO(data, size, dynamic);
+        if(!dynamic || vao == -1 ) {
+            vao = createVAO();
+            vbo = createVBO(data, size, dynamic);
+        } else {
+            changeData(vbo, data, size);
+        }
         for(int i = 0; i < attributes.length; i++){
             TransferAttributes attribute = attributes[i];
-            point(i,attribute.type.getIndex(), attribute.size, pointer);
+            point(i,attribute.getIndex(), attribute.size, pointer);
             pointer += attribute.size;
         }
+        vertexCount = (int) (size / (stride * 0.25f));
+    }
+
+    private void changeData(int vbo, float[] data, int size) {
+        FloatBuffer buffer = ToBuffer(data, size);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+        GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER,0, buffer);
+        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        memFree(buffer);
         vertexCount = (int) (size / (stride * 0.25f));
     }
 

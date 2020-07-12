@@ -102,6 +102,6 @@ public class OpenGLTexture implements Texture {
 
     @Override
     public boolean isSameTexture(Texture texture) {
-        return false;
+        return textureId == ((OpenGLTexture)texture).textureId;
     }
 }

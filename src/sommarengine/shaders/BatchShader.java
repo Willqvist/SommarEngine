@@ -21,10 +21,9 @@ public class BatchShader extends ShaderAdapter {
 
     @Override
     protected void bindAttributes(ShaderProgram program) {
-        program.bindAttribute(TransferAttributes.TypeEnum.POSITION.getIndex(),"position");
-        program.bindAttribute(TransferAttributes.TypeEnum.UV.getIndex(),"uv");
-        program.bindAttribute(TransferAttributes.TypeEnum.TEXTURE_ID.getIndex(),"textureIndex");
-        getProgram().bind();
+        program.bindAttribute(0,"position");
+        program.bindAttribute(1,"uv");
+        program.bindAttribute(2,"textureIndex");
         for(int i = 0; i < 32; i++) {
             program.setUniform("textures["+i+"]",i);
         }

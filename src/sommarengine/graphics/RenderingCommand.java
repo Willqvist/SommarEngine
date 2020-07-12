@@ -12,9 +12,9 @@ public interface RenderingCommand {
     private static RenderingCommand Instantiate() {
         return GraphicsAPI.renderingCommand();
     }
-
     void clearScreen();
     void setClearColor(Color clearColor);
     void createContext();
+    void destroy();
 
 }
