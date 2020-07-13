@@ -1,5 +1,7 @@
 package sommarengine.input;
 
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
 import org.lwjgl.glfw.GLFW;
 import sommarengine.core.Window;
 
@@ -25,7 +27,14 @@ public abstract class Input {
         return mouseButton[button] == GLFW.GLFW_PRESS || mouseButton[button] == GLFW.GLFW_REPEAT;
     }
 
+    protected static Vector2i mousePos = new Vector2i(0,0);
+
+    public static Vector2ic getMousePosition() {
+        return mousePos;
+    }
+
     public abstract void onKeyEvent(Window window,int key, int scancode, int action, int mods);
     public abstract void onMouseEvent(Window window,int button, int action, int mods);
+    public abstract void setMousePosition(int x,int y);
     public abstract void pollEvents();
 }

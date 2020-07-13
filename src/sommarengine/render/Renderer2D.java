@@ -5,10 +5,7 @@ import sommarengine.batching.Batch2D;
 import sommarengine.batching.BatchSource;
 import sommarengine.components.Transform;
 import sommarengine.components.camera.Camera;
-import sommarengine.graphics.ArrayBuffer;
-import sommarengine.graphics.Buffer;
-import sommarengine.graphics.Shader;
-import sommarengine.graphics.ShaderProvider;
+import sommarengine.graphics.*;
 import sommarengine.graphics.material.Material;
 import sommarengine.model.GpuDataTransfer;
 import sommarengine.model.TransferAttributes;
@@ -35,21 +32,11 @@ public class Renderer2D implements BatchSource {
     private static Renderer2D renderer2D;
     private Buffer vertexBuffer;
     private ArrayBuffer arrayBuffer;
-
-    private TransferAttributes[] attributes = new TransferAttributes[] {
-            new TransferAttributes(0, 2),
-            new TransferAttributes(1, 2),
-            new TransferAttributes(2,1)
-    };
-
     protected Renderer2D() {
         arrayBuffer = GraphicsAPI.createArrayBuffer();
         vertexBuffer = arrayBuffer.createBuffer(MAX_QUADS*5, Buffer.Type.ARRAY);
         vertexBuffer.setDataPerVertex(5);
-        //arrayBuffer.bind();
-        //vertexBuffer = GraphicsAPI.createBuffer(MAX_QUADS*5, Buffer.Type.ARRAY);
-
-        arrayBuffer.attribPointer(attributes);
+        arrayBuffer.attribPointer(ModelSourceBuilder.POS2D_UV_TEX_ATTRIBS);
     }
 
     public static Renderer2D getInstance() {

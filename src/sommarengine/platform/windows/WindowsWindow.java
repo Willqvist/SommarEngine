@@ -29,6 +29,7 @@ public class WindowsWindow extends WindowAdapter {
     private GLFWMouseButtonCallback mouseCallback;
     private GLFWKeyCallback keyCallback;
     private GLFWWindowSizeCallback windowSizeCallback;
+    private GLFWCursorPosCallback cursorPosCallback;
 
     public WindowsWindow(int width, int height, String title) {
         this.width = width;
@@ -73,8 +74,13 @@ public class WindowsWindow extends WindowAdapter {
         GLFW.glfwSetMouseButtonCallback(window,mouseCallback = GLFWMouseButtonCallback.create((long window, int button, int action, int mods)->{
             input.onMouseEvent(this,button,action,mods);
         }));
+
         GLFW.glfwSetKeyCallback(window, keyCallback = GLFWKeyCallback.create((window, key, scancode, action, mods)-> {
             input.onKeyEvent(this,key,scancode,action,mods);
+        }));
+
+        GLFW.glfwSetCursorPosCallback(window, cursorPosCallback = GLFWCursorPosCallback.create((window, x,y)-> {
+            input.setMousePosition((int)x,(int)y);
         }));
 
     }
@@ -106,6 +112,7 @@ public class WindowsWindow extends WindowAdapter {
         mouseCallback.free();
         keyCallback.free();
         windowSizeCallback.free();
+        cursorPosCallback.free();
         GLFW.glfwDestroyWindow(window);
         GLFW.glfwTerminate();
     }

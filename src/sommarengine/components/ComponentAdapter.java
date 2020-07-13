@@ -35,6 +35,11 @@ public class ComponentAdapter implements Component {
     }
 
     @Override
+    public void setAsFirst() {
+        getGameObject().setComponentOrder(this,0);
+    }
+
+    @Override
     public void setActive(boolean val) {
         active = val;
     }

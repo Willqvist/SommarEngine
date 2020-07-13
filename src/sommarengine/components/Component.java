@@ -10,6 +10,7 @@ public interface Component {
     void update();
     void render();
     void destroy();
+    void setAsFirst();
 
     void setActive(boolean val);
     boolean isActive();

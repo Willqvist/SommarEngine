@@ -1,6 +1,7 @@
 package sommarengine.core;
 
 import sommarengine.components.Component;
+import sommarengine.components.ComponentAdapter;
 import sommarengine.components.Model;
 import sommarengine.components.Transform;
 
@@ -87,5 +88,11 @@ public class GameObject {
 
     public Transform getTransform() {
         return transform;
+    }
+
+    public void setComponentOrder(Component component, int pos) {
+        int index = componentList.indexOf(component);
+        componentList.remove(index);
+        this.componentList.add(pos,component);
     }
 }

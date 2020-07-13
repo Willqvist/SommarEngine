@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL30;
 import sommarengine.graphics.ArrayBuffer;
 import sommarengine.graphics.Buffer;
 import sommarengine.model.TransferAttributes;
+import sommarengine.platform.GraphicsAPI;
 import sommarengine.tool.Console;
 
 import java.util.ArrayList;
@@ -40,6 +41,14 @@ public class OpenGLArrayBuffer implements ArrayBuffer {
     public Buffer createBuffer(int size, Buffer.Type type) {
         bind();
         Buffer buffer = new OpenGLBuffer(this, null, size, type, Buffer.Store.DYNAMIC);
+        createdBuffers.add(buffer);
+        return buffer;
+    }
+
+    @Override
+    public Buffer createBuffer(float[] data, int size, Buffer.Type type) {
+        bind();
+        Buffer buffer = new OpenGLBuffer(this, data, size, type, Buffer.Store.STATIC);
         createdBuffers.add(buffer);
         return buffer;
     }

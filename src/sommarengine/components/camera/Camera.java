@@ -3,10 +3,12 @@ package sommarengine.components.camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import sommarengine.components.Collider;
 import sommarengine.components.ComponentAdapter;
 import sommarengine.core.Screen;
 import sommarengine.core.Viewport;
 import sommarengine.events.event_types.ViewportResizeEvent;
+import sommarengine.light.LightMap;
 
 
 public class Camera extends ComponentAdapter {
@@ -19,10 +21,33 @@ public class Camera extends ComponentAdapter {
     private Matrix4f projectionMatrix,viewMatrix = new Matrix4f().identity(), vpm = new Matrix4f();
     private Vector3f prevPos = new Vector3f(0,0,0), prevRot = new Vector3f(0,0,0);
     private Viewport viewport = Screen.viewport;
+    private LightMap lightMap;
+    private boolean cull = true;
+
+    private static Camera active = null;
 
     public Camera() {
         viewport.onResizeListener(this::onViewportResize);
         updateProjection();
+        if(active == null)
+            active = this;
+    }
+
+    public static Camera main() {
+        return active;
+    }
+
+    public boolean isCulling() {
+        return cull;
+    }
+
+    public Camera setCull(boolean cull) {
+        this.cull = cull;
+        return this;
+    }
+
+    public boolean isInside(Collider collider) {
+        return true;
     }
 
     public float getFov() {
@@ -113,6 +138,19 @@ public class Camera extends ComponentAdapter {
             prevPos.set(position);
             prevRot.set(rotation);
         }
+    }
+
+    public void setLightMap(LightMap lightMap) {
+        this.lightMap = lightMap;
+    }
+
+    public void applyLightMap() {
+        if(lightMap == null) return;
+
+    }
+
+    public Vector3fc toWorldSpace(Vector3fc pos) {
+        return null;
     }
 
     public Matrix4f getVPM() {

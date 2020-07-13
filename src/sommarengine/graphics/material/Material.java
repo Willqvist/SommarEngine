@@ -6,9 +6,13 @@ import sommarengine.graphics.Shader;
 import sommarengine.texture.Texture;
 import sommarengine.tool.MatrixTools;
 
+import java.util.ArrayList;
+
 public class Material<T extends Shader> {
 
     private T shader;
+    private Texture[] textures = new Texture[5];
+    private int textureIndex = 0;
 
     public Material(T shader) {
         this.shader = shader;
@@ -18,28 +22,20 @@ public class Material<T extends Shader> {
         return shader;
     }
 
-    public void setTexture(Texture texture) {
-        setTexture(0, texture);
-    }
-
-    public void setTexture(int order, Texture texture) {
-
-    }
-
-    public void setAlbedoTexture(Texture texture) {
-
-    }
-
-    public void setNormalTexture(Texture texture) {
-
-    }
-
-    public void setBumpmapTexture(Texture texture) {
-
+    public void addTexture(String name, Texture texture) {
+        shader.getProgram().bind();
+        shader.getProgram().setUniform(name,textureIndex);
+        textures[textureIndex] = texture;
+        textureIndex ++;
     }
 
 
     public void bind(Transform transform, Camera camera) {
+        for (int i = 0; i < textures.length; i++) {
+            Texture t = textures[i];
+            if(t != null)
+                t.bind(i);
+        }
         shader.bind();
         shader.getProgram().setUniform("mvp",camera.getVPM());
         shader.getProgram().setUniform("transform", MatrixTools.createTransformMatrix(transform));
